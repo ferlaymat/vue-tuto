@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import Board from "./features/kanban/components/Board.vue";
 import type { BoardData } from "./features/kanban/types";
+import { useKanbanStore } from "./stores/kanbanStore";
+
+const store = useKanbanStore();
 
 // Fake data
-const fakeBoard: BoardData = {
+const initialBoard: BoardData = {
   id: "1",
   title: "My Kanban project",
   columns: [
@@ -27,10 +31,15 @@ const fakeBoard: BoardData = {
     },
   ],
 };
+
+onMounted(() => {
+  store.initializeBoard(initialBoard);
+});
 </script>
 
 <template>
-  <Board :board="fakeBoard" />
+  <Board v-if="store.board" :board="store.board" />
+  <p v-else>Chargement...</p>
 </template>
 
 <style scoped>

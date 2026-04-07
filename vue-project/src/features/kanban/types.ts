@@ -1,18 +1,18 @@
-type Priority = 'high' | 'medium' | 'low';
+export type Priority = 'high' | 'medium' | 'low';
 
- interface CardData {
+export interface CardData {
     id: string
     title: string
     priority: Priority
   };
 
-    interface ColumnData {
+export interface ColumnData {
     id: string
     title: string          
     cards: CardData[]          
   }
 
-  interface BoardData {
+export interface BoardData {
     id: string
     title: string          
     columns: ColumnData[]      
