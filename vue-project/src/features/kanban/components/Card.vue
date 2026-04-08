@@ -1,18 +1,30 @@
 <script setup lang="ts">
 import type { CardData } from "@/features/kanban/types";
+import {useKanbanStore} from "@/stores/kanbanStore";
 interface Props {
   card: CardData;
+  columnId: string;
+}
+const store = useKanbanStore();
+const props = defineProps<Props>();
+function onDragStart(e:DragEvent){
+  //set in the dataTransfert needed info for the move function
+  e.dataTransfer?.setData("cardId", props.card.id);
+  e.dataTransfer?.setData("fromColumnId", props.columnId);
 }
 
-defineProps<Props>();
+
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" draggable="true" @dragstart="onDragStart">
+    <div>
     <h3>{{ card.title }}</h3>
     <span :class="['priority', card.priority]">
       {{ card.priority }}
     </span>
+    </div>
+    <button class="delete-btn" v-on:click="store.deleteCard(card.id)">x</button>
   </div>
 </template>
 
@@ -23,6 +35,16 @@ defineProps<Props>();
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+  .delete-btn {
+    font-size: 20px;
+    cursor: pointer;
+    color: #999;
+  }
+
+  .delete-btn:hover {
+    color: red;
+  }
 
 .priority.high {
   color: red;

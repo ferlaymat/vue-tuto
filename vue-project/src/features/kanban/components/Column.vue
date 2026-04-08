@@ -1,19 +1,36 @@
 <script setup lang="ts">
 import type { ColumnData } from "@/features/kanban/types";
+import {useKanbanStore} from "@/stores/kanbanStore";
 import Card from "./Card.vue";
 
 interface Props {
   column: ColumnData;
 }
 
-defineProps<Props>();
+const store = useKanbanStore();
+const props = defineProps<Props>();
+
+function onDragOver(e:DragEvent){
+e.preventDefault();
+}
+
+function onDrop(e:DragEvent){
+  e.preventDefault();
+  //fetch from dataTransfer needed info
+  const cardId = e.dataTransfer?.getData("cardId");
+  const fromColumnId = e.dataTransfer?.getData("fromColumnId");
+  if(cardId && fromColumnId){
+    //apply move function
+    store.moveCard(cardId,fromColumnId,props.column.id);
+  }
+}
 </script>
 
 <template>
-  <div class="column">
+  <div class="column" @dragover="onDragOver" @drop="onDrop">
     <h2>{{ column.title }}</h2>
     <div class="cards">
-      <Card v-for="card in column.cards" :key="card.id" :card="card" />
+      <Card v-for="card in column.cards" :key="card.id" :card="card" :columnId="column.id"/>
     </div>
   </div>
 </template>

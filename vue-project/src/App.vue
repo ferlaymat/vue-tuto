@@ -1,51 +1,38 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
-import Board from "./features/kanban/components/Board.vue";
-import type { BoardData } from "./features/kanban/types";
-import { useKanbanStore } from "./stores/kanbanStore";
 
-const store = useKanbanStore();
-
-// Fake data
-const initialBoard: BoardData = {
-  id: "1",
-  title: "My Kanban project",
-  columns: [
-    {
-      id: "col-1",
-      title: "To-do",
-      cards: [
-        { id: "card-1", title: "Fix bug login", priority: "high" },
-        { id: "card-2", title: "Add feature", priority: "medium" },
-      ],
-    },
-    {
-      id: "col-2",
-      title: "In progress",
-      cards: [{ id: "card-3", title: "Review PR", priority: "low" }],
-    },
-    {
-      id: "col-3",
-      title: "Done",
-      cards: [],
-    },
-  ],
-};
-
-onMounted(() => {
-  store.initializeBoard(initialBoard);
-});
 </script>
 
 <template>
-  <Board v-if="store.board" :board="store.board" />
-  <p v-else>Chargement...</p>
+  <nav>
+      <router-link to="/">Home</router-link>
+      <router-link to="/kanban">Kanban</router-link>
+    </nav>
+   <router-view />
 </template>
 
 <style scoped>
-body {
-  background: #e0e0e0;
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
+nav {
+    background: #2c3e50;
+    padding: 1rem 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+
+  nav a:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  nav a.router-link-active {
+    background: #42b983;
+    font-weight: bold;
+  }
 </style>

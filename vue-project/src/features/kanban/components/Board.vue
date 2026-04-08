@@ -1,16 +1,36 @@
 <script setup lang="ts">
-import type { BoardData } from "@/features/kanban/types";
+import type { BoardData, Priority } from "@/features/kanban/types";
+import {useKanbanStore} from "@/stores/kanbanStore";
 import Column from "./Column.vue";
+import { ref } from "vue";
 interface Props {
   board: BoardData;
 }
-
+const store = useKanbanStore();
+const newCardTitle = ref("");
+const newCardPriority = ref<Priority>("medium");
 defineProps<Props>();
+
+function handleAddCard(){
+  store.addCard("col-1",newCardTitle.value, newCardPriority.value);
+  newCardTitle.value = "";
+  newCardPriority.value = "medium";
+}
 </script>
 
 <template>
   <div class="board">
     <h1>{{ board.title }}</h1>
+     <div class="add-card-form">
+        <input v-model="newCardTitle" placeholder="New Task..." />
+        <select v-model="newCardPriority">
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        <button @click="handleAddCard">Add task</button>
+      </div>
+
     <div class="columns">
       <Column
         v-for="column in board.columns"
