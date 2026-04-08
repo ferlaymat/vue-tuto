@@ -6,6 +6,7 @@
   <nav>
       <router-link to="/">Home</router-link>
       <router-link to="/kanban">Kanban</router-link>
+      <router-link to="/kanban-api">Kanban API</router-link>
     </nav>
    <router-view />
 </template>
