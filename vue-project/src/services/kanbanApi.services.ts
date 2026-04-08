@@ -51,7 +51,7 @@ import { BoardData, Priority, CardData } from "@/features/kanban-api/types";
     }
   }
 
-  // === PUT : Déplacer une carte ===
+
   export async function moveCardApi(request: MoveCardRequestDTO): Promise<void> {
     const response = await fetch(`${API_URL}/card/move`, {
       method: "PUT",
